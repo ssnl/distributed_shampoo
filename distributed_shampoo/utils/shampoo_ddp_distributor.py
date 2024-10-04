@@ -26,6 +26,7 @@ from distributed_shampoo.utils.shampoo_utils import (
     compress_list,
     generate_pairwise_indices,
     get_dtype_size,
+    _zip_equal,
 )
 from torch import Tensor
 from torch.distributed import _tensor as dtensor
@@ -108,7 +109,7 @@ class DDPDistributor(DistributorInterface):
 
         # Initialize selectors and local blocked (masked) parameters.
         self._distributor_selector: Tuple[bool, ...] = tuple(
-            block_info.group_source_rank == self._group_rank
+            block_info.group_source_rank == self._group_rank  # type: ignore
             for block_info in self._global_block_info_list
         )
         self._local_blocked_params: Tuple[Tensor, ...] = compress_list(
@@ -282,16 +283,14 @@ class DDPDistributor(DistributorInterface):
                 (param_index, param),
                 num_blocks_within_param,
                 (buffer_size_ranks_start, buffer_size_ranks_end),
-            ) in zip(
+            ) in _zip_equal(
                 enumerate(self._param_group[PARAMS]),
                 self._global_num_blocks_per_param,
                 generate_pairwise_indices(self._global_num_blocks_per_param),
-                strict=True,
             )
-            for block_index, (_, group_source_rank) in zip(
+            for block_index, (_, group_source_rank) in _zip_equal(
                 range(num_blocks_within_param),
                 buffer_size_ranks[buffer_size_ranks_start:buffer_size_ranks_end],
-                strict=True,
             )
         )
 
@@ -400,8 +399,8 @@ class DDPDistributor(DistributorInterface):
             )[0]
             .view(self._communication_dtype)
             .view(blocked_param.shape)
-            for buffer, blocked_param in zip(
-                splitted_local_dist_buffers, self._global_blocked_params, strict=True
+            for buffer, blocked_param in _zip_equal(
+                splitted_local_dist_buffers, self._global_blocked_params,
             )
         )
         self._local_dist_blocked_buffers = compress_list(

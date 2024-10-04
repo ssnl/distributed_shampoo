@@ -7,17 +7,17 @@ LICENSE file in the root directory of this source tree.
 
 """
 
-from functools import cache
-from typing import Optional
+from functools import lru_cache
+from typing import Optional, Tuple
 
 from torch.distributed._tensor import DeviceMesh
 
 
-@cache
+@lru_cache(maxsize=None)
 def get_device_mesh(
     device_type: str,
-    mesh: tuple[tuple[int, ...], ...] | tuple[int, ...],
-    mesh_dim_names: Optional[tuple[str, ...]] = None,
+    mesh: 'Tuple[Tuple[int, ...], ...] | Tuple[int, ...]',
+    mesh_dim_names: Optional['Tuple[str, ...]'] = None,
 ) -> DeviceMesh:
     """Returns device mesh from provided device type, mesh, and mesh dim names.
     This function will cache previous meshes according to the input.

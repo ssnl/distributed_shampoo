@@ -21,6 +21,7 @@ from distributed_shampoo.utils.shampoo_quantization import (
     QuantizedTensor,
     QuantizedTensorList,
 )
+from distributed_shampoo.utils.shampoo_utils import _zip_equal
 from torch.testing._comparison import default_tolerances
 
 
@@ -179,7 +180,7 @@ class QuantizedTensorListTest(unittest.TestCase):
     def test_dequantize_quantize(self) -> None:
         deq_tensors = self._quantized_tensors.dequantize()
         self.assertFalse(self._quantized_tensors.is_dequantized_stored())
-        for deq_tensor, tensor in zip(deq_tensors, self._base_tensors, strict=True):
+        for deq_tensor, tensor in _zip_equal(deq_tensors, self._base_tensors):
             with self.subTest(deq_tensor=deq_tensor, base_tensor=tensor):
                 self.assertEqual(deq_tensor.dtype, torch.float64)
                 torch.testing.assert_close(deq_tensor, tensor, check_dtype=False)
@@ -189,8 +190,8 @@ class QuantizedTensorListTest(unittest.TestCase):
 
         self._quantized_tensors.quantize(deq_tensors)
         self.assertFalse(self._quantized_tensors.is_dequantized_stored())
-        for quantized_tensor, tensor in zip(
-            self._quantized_tensors.quantized_value, self._base_tensors, strict=True
+        for quantized_tensor, tensor in _zip_equal(
+            self._quantized_tensors.quantized_value, self._base_tensors,
         ):
             with self.subTest(quantized_tensor=quantized_tensor, base_tensor=tensor):
                 self.assertEqual(quantized_tensor.dtype, torch.float16)
@@ -220,8 +221,8 @@ class QuantizedTensorListTest(unittest.TestCase):
 
         self._quantized_tensors.dequantize_()
         self.assertTrue(self._quantized_tensors.is_dequantized_stored())
-        for deq_tensor, tensor in zip(
-            self._quantized_tensors.dequantized_value, self._base_tensors, strict=True
+        for deq_tensor, tensor in _zip_equal(
+            self._quantized_tensors.dequantized_value, self._base_tensors,
         ):
             with self.subTest(deq_tensor=deq_tensor, base_tensor=tensor):
                 self.assertEqual(deq_tensor.dtype, torch.float64)
@@ -238,8 +239,8 @@ class QuantizedTensorListTest(unittest.TestCase):
             )
         # All dequantized values should be there without any change because no changes in quantized values.
         self.assertTrue(self._quantized_tensors.is_dequantized_stored())
-        for deq_tensor, tensor in zip(
-            self._quantized_tensors.dequantized_value, self._base_tensors, strict=True
+        for deq_tensor, tensor in _zip_equal(
+            self._quantized_tensors.dequantized_value, self._base_tensors,
         ):
             with self.subTest(deq_tensor=deq_tensor, base_tensor=tensor):
                 self.assertEqual(deq_tensor.dtype, torch.float64)
@@ -250,8 +251,8 @@ class QuantizedTensorListTest(unittest.TestCase):
 
         self._quantized_tensors.quantize_()
         self.assertFalse(self._quantized_tensors.is_dequantized_stored())
-        for quantized_tensor, tensor in zip(
-            self._quantized_tensors.quantized_value, self._base_tensors, strict=True
+        for quantized_tensor, tensor in _zip_equal(
+            self._quantized_tensors.quantized_value, self._base_tensors,
         ):
             with self.subTest(quantized_tensor=quantized_tensor, base_tensor=tensor):
                 self.assertEqual(quantized_tensor.dtype, torch.float16)

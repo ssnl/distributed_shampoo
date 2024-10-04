@@ -25,6 +25,7 @@ from distributed_shampoo.utils.shampoo_utils import (
     generate_pairwise_indices,
     merge_small_dims,
     multi_dim_split,
+    _zip_equal,
 )
 from torch import distributed as dist, Tensor
 from torch.nn import Parameter
@@ -94,10 +95,9 @@ class FSDPDistributor(DistributorInterface):
                 composable_block_ids=(param_index, f"rank_{rank}-block_{block_index}"),
             )
             # Block index that is accumulated across all parameters within a parameter group.
-            for ((param_index, param), num_blocks_within_param) in zip(
+            for ((param_index, param), num_blocks_within_param) in _zip_equal(
                 enumerate(self._param_group[PARAMS]),
                 self._global_num_blocks_per_param,
-                strict=True,
             )
             for block_index in range(num_blocks_within_param)
         )
@@ -193,12 +193,11 @@ class FSDPDistributor(DistributorInterface):
             num_blocks,
             (block_index, next_block_index),
             (split_index, next_split_index),
-        ) in zip(
+        ) in _zip_equal(
             self._param_group[PARAMS],
             self._global_num_blocks_per_param,
             generate_pairwise_indices(self._global_num_blocks_per_param),
             generate_pairwise_indices(self._global_num_splits_per_param),
-            strict=True,
         ):
             flattened_grad = flattened_param.grad
             param_distributor_selector = self._distributor_selector[
@@ -232,11 +231,10 @@ class FSDPDistributor(DistributorInterface):
                 grad,
                 merged_dims,
                 (blocks_within_split_index, next_blocks_within_split_index),
-            ) in zip(
+            ) in _zip_equal(
                 split_grads,
                 merged_dims_within_flattened_param,
                 generate_pairwise_indices(num_blocks_within_split_grads),
-                strict=True,
             ):
                 # Obtain blocks for each split gradient after merging.
                 blocks_within_grad = multi_dim_split(

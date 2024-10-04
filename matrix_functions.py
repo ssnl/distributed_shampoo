@@ -11,7 +11,7 @@ import enum
 import logging
 import math
 import time
-from dataclasses import asdict
+from attrs import asdict
 from fractions import Fraction
 from math import isfinite
 from typing import Tuple, Union
@@ -181,8 +181,9 @@ def _matrix_root_diagonal(
     # compute matrix power
     alpha = -exponent_multiplier / root
 
+    X = (torch.diag(A) + epsilon).pow(alpha)
     return (
-        torch.diag(X := (torch.diag(A) + epsilon).pow(alpha))
+        torch.diag(X)
         if return_full_matrix
         else X
     )

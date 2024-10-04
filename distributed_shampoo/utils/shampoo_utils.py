@@ -9,12 +9,69 @@ LICENSE file in the root directory of this source tree.
 
 import math
 from functools import partial
-from itertools import accumulate, chain, compress, pairwise
+from itertools import accumulate, chain, compress
+try:
+    from itertools import pairwise  # type: ignore
+except ImportError:
+    from itertools import tee
+
+    def pairwise(iterable):
+        """Returns an iterator of paired items, overlapping, from the original
+
+        >>> take(4, pairwise(count()))
+        [(0, 1), (1, 2), (2, 3), (3, 4)]
+
+        On Python 3.10 and above, this is an alias for :func:`itertools.pairwise`.
+
+        """
+        a, b = tee(iterable)
+        next(b, None)
+        return zip(a, b)
+
 from types import TracebackType
 from typing import Callable, Iterator, Optional, Sequence, Tuple, Type, TypeVar
 
 import torch
 from torch import Tensor
+
+
+
+class UnequalIterablesError(ValueError):
+    def __init__(self, details=None):
+        msg = 'Iterables have different lengths'
+        if details is not None:
+            msg += (': index 0 has length {}; index {} has length {}').format(
+                *details
+            )
+
+        super().__init__(msg)
+
+
+_marker = object()
+
+def _zip_equal_generator(iterables):
+    import itertools
+    for combo in itertools.zip_longest(*iterables, fillvalue=_marker):
+        for val in combo:
+            if val is _marker:
+                raise UnequalIterablesError()
+        yield combo
+
+
+def _zip_equal(*iterables):
+    # Check whether the iterables are all the same size.
+    try:
+        first_size = len(iterables[0])
+        for i, it in enumerate(iterables[1:], 1):
+            size = len(it)
+            if size != first_size:
+                raise UnequalIterablesError(details=(first_size, i, size))
+        # All sizes are equal, we can use the built-in zip.
+        return zip(*iterables)
+    # If any one of the iterables didn't have a length, start reading
+    # them until one runs out.
+    except TypeError:
+        return _zip_equal_generator(iterables)
 
 
 def merge_small_dims(tensor_shape: Sequence[int], threshold: int) -> Tuple[int, ...]:
