@@ -30,14 +30,14 @@ from distributed_shampoo.utils.shampoo_utils import (
     _zip_equal,
 )
 
-from matrix_functions import (
+from distributed_shampoo.matrix_functions import (
     check_diagonal,
     compute_matrix_root_inverse_residuals,
     matrix_inverse_root,
 )
 
-from matrix_functions_types import DefaultEigenConfig, RootInvConfig
-from optimizer_modules import OptimizerModule
+from distributed_shampoo.matrix_functions_types import DefaultEigenConfig, RootInvConfig
+from distributed_shampoo.optimizer_modules import OptimizerModule
 from torch import Tensor
 from torch.autograd import profiler
 
