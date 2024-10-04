@@ -15,16 +15,16 @@ from unittest import mock
 
 import torch
 
-from .utils import shampoo_preconditioner_list
-from .utils.shampoo_block_info import BlockInfo
-from .utils.shampoo_preconditioner_list import (
+from .. import shampoo_preconditioner_list
+from ..shampoo_block_info import BlockInfo
+from ..shampoo_preconditioner_list import (
     AdagradPreconditionerList,
     DequantizePreconditionersContext,
     PreconditionerList,
     SGDPreconditionerList,
     ShampooPreconditionerList,
 )
-from .utils.shampoo_quantization import QuantizedTensorList
+from ..shampoo_quantization import QuantizedTensorList
 from torch import Tensor
 
 
@@ -58,7 +58,7 @@ class PreconditionerListTest(unittest.TestCase):
     def _instantiate_preconditioner_list(self, **kwargs: Any) -> PreconditionerList:
         # Disable the abstract methods check from the interface so it is possible to instantiate PreconditionerList.
         PreconditionerList.__abstractmethods__ = frozenset()
-        return PreconditionerList(block_list=self._block_list)
+        return PreconditionerList(block_list=self._block_list)  # type: ignore
 
     def _test_update_preconditioners_and_precondition(
         self,
@@ -173,7 +173,7 @@ class AdagradPreconditionerListTest(PreconditionerListTest):
         kwargs = {"beta2": 1.0, "epsilon": 0.0, "use_bias_correction": True} | kwargs
         return AdagradPreconditionerList(
             block_list=self._block_list,
-            state=self._state,
+            state=self._state,  # type: ignore
             block_info_list=self._block_info_list,
             distributor_selector=self._distributor_selector,
             **kwargs,
@@ -279,7 +279,7 @@ class ShampooPreconditionerListTest(AdagradPreconditionerListTest):
         } | kwargs
         return ShampooPreconditionerList(
             block_list=self._block_list,
-            state=self._state,
+            state=self._state,  # type: ignore
             block_info_list=self._block_info_list,
             distributor_selector=self._distributor_selector,
             **kwargs,
@@ -520,7 +520,7 @@ class ShampooPreconditionerListTest(AdagradPreconditionerListTest):
                 ValueError,
                 re.escape("Encountered inf values in bias-corrected factor matrix"),
             ):
-                self._preconditioner_list.compute_root_inverse()
+                self._preconditioner_list.compute_root_inverse()  # type: ignore
 
     def test_raise_nan_in_factor_matrix_compute_root_inverse(self) -> None:
         with DequantizePreconditionersContext(
@@ -538,7 +538,7 @@ class ShampooPreconditionerListTest(AdagradPreconditionerListTest):
                 ValueError,
                 re.escape("Encountered nan values in bias-corrected factor matrix"),
             ):
-                self._preconditioner_list.compute_root_inverse()
+                self._preconditioner_list.compute_root_inverse()  # type: ignore
 
     # Note: This is needed for pyre to infer the type of argument into mock.patch.object.
     shampoo_preconditioner_list_module: ModuleType = shampoo_preconditioner_list
@@ -557,7 +557,7 @@ class ShampooPreconditionerListTest(AdagradPreconditionerListTest):
             ValueError,
             re.escape("Encountered nan or inf values in inverse factor matrix"),
         ):
-            self._preconditioner_list.compute_root_inverse()
+            self._preconditioner_list.compute_root_inverse()  # type: ignore
         mock_matrix_inverse_root.assert_called_once()
 
     @mock.patch.object(
@@ -574,7 +574,7 @@ class ShampooPreconditionerListTest(AdagradPreconditionerListTest):
             ValueError,
             re.escape("Encountered nan or inf values in inverse factor matrix"),
         ):
-            self._preconditioner_list.compute_root_inverse()
+            self._preconditioner_list.compute_root_inverse()  # type: ignore
         mock_matrix_inverse_root.assert_called_once()
 
     @mock.patch.object(
@@ -590,7 +590,7 @@ class ShampooPreconditionerListTest(AdagradPreconditionerListTest):
             preconditioner_list=self._preconditioner_list
         ), self.assertLogs(level="WARNING") as cm:
             # Because use_protected_eigh is True, we expect the warning to be logged.
-            self._preconditioner_list.compute_root_inverse()
+            self._preconditioner_list.compute_root_inverse()  # type: ignore
         self.assertCountEqual(
             [r.msg for r in cm.records],
             [
@@ -615,7 +615,7 @@ class ShampooPreconditionerListTest(AdagradPreconditionerListTest):
         with DequantizePreconditionersContext(
             preconditioner_list=self._preconditioner_list
         ), self.assertRaises(ZeroDivisionError):
-            self._preconditioner_list.compute_root_inverse()
+            self._preconditioner_list.compute_root_inverse()  # type: ignore
         mock_matrix_inverse_root.assert_called()
 
     @mock.patch.object(
@@ -632,7 +632,7 @@ class ShampooPreconditionerListTest(AdagradPreconditionerListTest):
         ), self.assertLogs(
             level="DEBUG",
         ) as cm:
-            self._preconditioner_list.compute_root_inverse()
+            self._preconditioner_list.compute_root_inverse()  # type: ignore
         self.assertCountEqual(
             [r.msg for r in cm.records],
             [
@@ -676,7 +676,7 @@ class ShampooPreconditionerListTest(AdagradPreconditionerListTest):
         """
         preconditioner_list = ShampooPreconditionerList(
             block_list=(self._params[0],),
-            state=self._state,
+            state=self._state,  # type: ignore
             block_info_list=(self._block_info_list[0],),
             distributor_selector=(self._distributor_selector[0],),
             epsilon=0.0,

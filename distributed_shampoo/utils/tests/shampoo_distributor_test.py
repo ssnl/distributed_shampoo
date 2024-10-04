@@ -15,10 +15,10 @@ from typing import Type
 
 import torch
 
-from .distributed_shampoo import DistributedShampoo
-from .tests.shampoo_test_utils import construct_training_problem
-from .utils.shampoo_block_info import BlockInfo
-from .utils.shampoo_distributor import (
+from ... import DistributedShampoo
+from ...tests.shampoo_test_utils import construct_training_problem
+from ..shampoo_block_info import BlockInfo
+from ..shampoo_distributor import (
     Distributor,
     DistributorInterface,
 )
@@ -55,7 +55,7 @@ class DistributorInterfaceTest(unittest.TestCase):
 
     def test_update_params(self) -> None:
         self.assertIsNone(
-            self._distributor.update_params(masked_blocked_search_directions=[])
+            self._distributor.update_params(masked_blocked_search_directions=[])  # type: ignore
         )
 
     def test_merge_and_block_gradients(self) -> None:

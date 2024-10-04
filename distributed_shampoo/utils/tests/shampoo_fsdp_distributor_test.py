@@ -14,7 +14,7 @@ from typing import List
 
 import torch
 
-from .utils.shampoo_fsdp_distributor import FSDPDistributor
+from ..shampoo_fsdp_distributor import FSDPDistributor
 from torch import Tensor
 
 logger: logging.Logger = logging.getLogger(__name__)
