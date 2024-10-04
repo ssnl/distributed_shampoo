@@ -10,10 +10,10 @@ LICENSE file in the root directory of this source tree.
 from typing import List, Tuple
 
 import torch
-from distributed_shampoo.shampoo_types import FSDPParameterMetadata
+from .shampoo_types import FSDPParameterMetadata
 
-from distributed_shampoo.tests.shampoo_test_utils import construct_training_problem
-from distributed_shampoo.utils.shampoo_fsdp_utils import (
+from .tests.shampoo_test_utils import construct_training_problem
+from .utils.shampoo_fsdp_utils import (
     compile_fsdp_parameter_metadata,
     parse_fsdp_params,
 )

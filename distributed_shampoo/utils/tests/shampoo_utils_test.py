@@ -12,7 +12,7 @@ import unittest
 
 import torch
 
-from distributed_shampoo.utils.shampoo_utils import (
+from .utils.shampoo_utils import (
     compress_list,
     generate_pairwise_indices,
     get_dtype_size,

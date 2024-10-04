@@ -15,10 +15,10 @@ from typing import Type
 
 import torch
 
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.tests.shampoo_test_utils import construct_training_problem
-from distributed_shampoo.utils.shampoo_block_info import BlockInfo
-from distributed_shampoo.utils.shampoo_distributor import (
+from .distributed_shampoo import DistributedShampoo
+from .tests.shampoo_test_utils import construct_training_problem
+from .utils.shampoo_block_info import BlockInfo
+from .utils.shampoo_distributor import (
     Distributor,
     DistributorInterface,
 )

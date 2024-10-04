@@ -16,12 +16,12 @@ from functools import partial
 from types import ModuleType
 from typing import Callable, List, Tuple
 
-import distributed_shampoo.matrix_functions as matrix_functions
+from .. import matrix_functions
 
 import numpy as np
 
 import torch
-from distributed_shampoo.matrix_functions import (
+from ..matrix_functions import (
     _matrix_inverse_root_newton,
     _matrix_root_eigen,
     check_diagonal,
@@ -29,7 +29,7 @@ from distributed_shampoo.matrix_functions import (
     matrix_inverse_root,
     NewtonConvergenceFlag,
 )
-from distributed_shampoo.matrix_functions_types import (
+from ..matrix_functions_types import (
     CoupledHigherOrderConfig,
     CoupledNewtonConfig,
     EigenConfig,

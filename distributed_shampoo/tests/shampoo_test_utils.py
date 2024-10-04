@@ -73,7 +73,7 @@ def construct_training_problem(
     if isinstance(fill, float):
         fill = (fill,) * (len(model.linear_layers))
 
-    from distributed_shampoo.utils.shampoo_utils import _zip_equal
+    from ..utils.shampoo_utils import _zip_equal
     for m, f in _zip_equal(model.linear_layers, fill):
         m.weight.data.fill_(f)
         if bias:

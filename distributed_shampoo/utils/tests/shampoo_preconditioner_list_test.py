@@ -15,16 +15,16 @@ from unittest import mock
 
 import torch
 
-from distributed_shampoo.utils import shampoo_preconditioner_list
-from distributed_shampoo.utils.shampoo_block_info import BlockInfo
-from distributed_shampoo.utils.shampoo_preconditioner_list import (
+from .utils import shampoo_preconditioner_list
+from .utils.shampoo_block_info import BlockInfo
+from .utils.shampoo_preconditioner_list import (
     AdagradPreconditionerList,
     DequantizePreconditionersContext,
     PreconditionerList,
     SGDPreconditionerList,
     ShampooPreconditionerList,
 )
-from distributed_shampoo.utils.shampoo_quantization import QuantizedTensorList
+from .utils.shampoo_quantization import QuantizedTensorList
 from torch import Tensor
 
 

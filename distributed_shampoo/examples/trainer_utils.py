@@ -19,9 +19,9 @@ import numpy as np
 import torch
 import torch.distributed as dist
 
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.examples.convnet import ConvNet
-from distributed_shampoo.shampoo_types import (
+from .distributed_shampoo import DistributedShampoo
+from .examples.convnet import ConvNet
+from .shampoo_types import (
     AdaGradGraftingConfig,
     AdamGraftingConfig,
     CommunicationDType,

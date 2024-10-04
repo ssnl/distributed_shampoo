@@ -17,7 +17,7 @@ from math import isfinite
 from typing import Tuple, Union
 
 import torch
-from distributed_shampoo.matrix_functions_types import (
+from .matrix_functions_types import (
     CoupledHigherOrderConfig,
     CoupledNewtonConfig,
     DefaultEigenConfig,

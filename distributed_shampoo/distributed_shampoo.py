@@ -26,7 +26,7 @@ from typing import (
 
 import torch
 
-from distributed_shampoo.shampoo_types import (
+from .shampoo_types import (
     AdaGradGraftingConfig,
     AdamGraftingConfig,
     BETA3,
@@ -74,34 +74,34 @@ from distributed_shampoo.shampoo_types import (
     WEIGHT_DECAY,
 )
 
-from distributed_shampoo.utils.shampoo_checkpoint_utils import (
+from .utils.shampoo_checkpoint_utils import (
     extract_state_dict_content,
     flatten,
     unflatten,
     update_param_state_dict_object,
 )
-from distributed_shampoo.utils.shampoo_ddp_distributor import DDPDistributor
-from distributed_shampoo.utils.shampoo_distributor import Distributor
-from distributed_shampoo.utils.shampoo_fsdp_distributor import FSDPDistributor
-from distributed_shampoo.utils.shampoo_fully_shard_distributor import (
+from .utils.shampoo_ddp_distributor import DDPDistributor
+from .utils.shampoo_distributor import Distributor
+from .utils.shampoo_fsdp_distributor import FSDPDistributor
+from .utils.shampoo_fully_shard_distributor import (
     FullyShardDistributor,
 )
-from distributed_shampoo.utils.shampoo_hsdp_distributor import HSDPDistributor
+from .utils.shampoo_hsdp_distributor import HSDPDistributor
 
-from distributed_shampoo.utils.shampoo_preconditioner_list import (
+from .utils.shampoo_preconditioner_list import (
     AdagradPreconditionerList,
     DequantizePreconditionersContext,
     SGDPreconditionerList,
     ShampooPreconditionerList,
 )
-from distributed_shampoo.utils.shampoo_quantization import (
+from .utils.shampoo_quantization import (
     DequantizeQuantizedTensorListContext,
     QuantizedTensor,
     QuantizedTensorList,
 )
-from distributed_shampoo.utils.shampoo_utils import compress_list, _zip_equal
+from .utils.shampoo_utils import compress_list, _zip_equal
 
-from distributed_shampoo.matrix_functions_types import DefaultEigenConfig, RootInvConfig
+from .matrix_functions_types import DefaultEigenConfig, RootInvConfig
 from torch.optim.optimizer import ParamsT
 
 logger: logging.Logger = logging.getLogger(__name__)

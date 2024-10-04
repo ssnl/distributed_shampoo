@@ -20,13 +20,13 @@ from typing import Callable, Optional
 from unittest import mock
 
 import torch
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import (
+from .distributed_shampoo import DistributedShampoo
+from .shampoo_types import (
     AdaGradGraftingConfig,
     CommunicationDType,
     DDPShampooConfig,
 )
-from distributed_shampoo.tests.shampoo_test_utils import construct_training_problem
+from .tests.shampoo_test_utils import construct_training_problem
 
 from torch import distributed as dist
 from torch.nn.parameter import Parameter

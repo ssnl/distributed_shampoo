@@ -16,13 +16,13 @@ from functools import partial
 from typing import Callable, Optional
 
 import torch
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import (
+from .distributed_shampoo import DistributedShampoo
+from .shampoo_types import (
     AdaGradGraftingConfig,
     GraftingConfig,
     ShampooPT2CompileConfig,
 )
-from distributed_shampoo.tests.shampoo_test_utils import construct_training_problem
+from .tests.shampoo_test_utils import construct_training_problem
 from torch.nn.parameter import Parameter
 from torch.optim.optimizer import ParamsT
 

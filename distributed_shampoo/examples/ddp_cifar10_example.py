@@ -13,8 +13,8 @@ import os
 import torch.distributed as dist
 import torch.distributed.checkpoint as dist_checkpoint
 
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.examples.trainer_utils import (
+from .distributed_shampoo import DistributedShampoo
+from .examples.trainer_utils import (
     get_data_loader_and_sampler,
     get_model_and_loss_fn,
     instantiate_optimizer,
@@ -23,7 +23,7 @@ from distributed_shampoo.examples.trainer_utils import (
     setup_distribution,
     train_model,
 )
-from distributed_shampoo.shampoo_types import DDPShampooConfig, PrecisionConfig
+from .shampoo_types import DDPShampooConfig, PrecisionConfig
 from torch import nn
 
 logging.basicConfig(

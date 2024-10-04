@@ -17,15 +17,15 @@ from typing import Callable, List, Optional, Tuple
 from unittest import mock
 
 import torch
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import (
+from .distributed_shampoo import DistributedShampoo
+from .shampoo_types import (
     AdaGradGraftingConfig,
     CommunicationDType,
     HSDPShampooConfig,
 )
-from distributed_shampoo.tests.shampoo_test_utils import construct_training_problem
-from distributed_shampoo.utils.shampoo_fsdp_utils import compile_fsdp_parameter_metadata
-from distributed_shampoo.utils.shampoo_preconditioner_list import SHAMPOO
+from .tests.shampoo_test_utils import construct_training_problem
+from .utils.shampoo_fsdp_utils import compile_fsdp_parameter_metadata
+from .utils.shampoo_preconditioner_list import SHAMPOO
 
 from torch import nn
 from torch.distributed.checkpoint._nested_dict import flatten_state_dict

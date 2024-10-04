@@ -10,8 +10,8 @@ LICENSE file in the root directory of this source tree.
 from typing import Dict, Tuple
 
 import torch
-from distributed_shampoo.shampoo_types import FSDPParameterMetadata
-from distributed_shampoo.utils.shampoo_utils import _zip_equal
+from ..shampoo_types import FSDPParameterMetadata
+from ..utils.shampoo_utils import _zip_equal
 
 from torch.distributed.fsdp import FullyShardedDataParallel as FSDP, ShardingStrategy
 from torch.nn import Parameter

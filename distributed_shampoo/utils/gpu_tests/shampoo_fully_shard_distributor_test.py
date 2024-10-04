@@ -14,12 +14,12 @@ from functools import partial
 from typing import Callable, List, Optional, Tuple
 
 import torch
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import (
+from .distributed_shampoo import DistributedShampoo
+from .shampoo_types import (
     AdaGradGraftingConfig,
     FullyShardShampooConfig,
 )
-from distributed_shampoo.tests.shampoo_test_utils import construct_training_problem
+from .tests.shampoo_test_utils import construct_training_problem
 
 from torch import nn
 from torch.distributed._composable.fsdp import fully_shard

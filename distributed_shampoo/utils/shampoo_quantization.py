@@ -13,15 +13,15 @@ from operator import methodcaller
 from typing import Optional, Sequence, Tuple, Union
 
 import torch
-from distributed_shampoo.utils.shampoo_block_info import BlockInfo
+from ..utils.shampoo_block_info import BlockInfo
 
-from distributed_shampoo.utils.shampoo_utils import (
+from ..utils.shampoo_utils import (
     compress_list,
     ParameterizeEnterExitContext,
     _zip_equal,
 )
 
-from distributed_shampoo.optimizer_modules import OptimizerModule
+from ..optimizer_modules import OptimizerModule
 from torch import Tensor
 
 logger: logging.Logger = logging.getLogger(__name__)

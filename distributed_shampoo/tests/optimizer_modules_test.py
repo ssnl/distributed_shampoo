@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple, Union
 
 import torch
-from distributed_shampoo.optimizer_modules import OptimizerModule
+from ..optimizer_modules import OptimizerModule
 
 
 @dataclass
