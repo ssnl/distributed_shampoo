@@ -14,19 +14,19 @@ from typing import Any, List, Optional, Tuple, Union
 from unittest import mock
 
 import torch
-from distributed_shampoo.shampoo_types import PrecisionConfig, PreconditionerValueError
+from ...shampoo_types import PrecisionConfig, PreconditionerValueError
 
-from distributed_shampoo.utils import shampoo_preconditioner_list
-from distributed_shampoo.utils.shampoo_block_info import BlockInfo
-from distributed_shampoo.utils.shampoo_preconditioner_list import (
+from ...utils import shampoo_preconditioner_list
+from ...utils.shampoo_block_info import BlockInfo
+from ...utils.shampoo_preconditioner_list import (
     AdagradPreconditionerList,
     DequantizePreconditionersContext,
     PreconditionerList,
     SGDPreconditionerList,
     ShampooPreconditionerList,
 )
-from distributed_shampoo.utils.shampoo_quantization import QuantizedTensorList
-from matrix_functions_types import EigenConfig
+from ...utils.shampoo_quantization import QuantizedTensorList
+from ...matrix_functions_types import EigenConfig
 from torch import Tensor
 
 

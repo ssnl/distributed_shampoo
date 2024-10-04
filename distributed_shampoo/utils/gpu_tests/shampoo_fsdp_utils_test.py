@@ -11,9 +11,10 @@ import unittest
 from typing import List, Tuple
 
 import torch
-from distributed_shampoo.shampoo_types import FSDPParameterMetadata
-from distributed_shampoo.tests.shampoo_test_utils import construct_training_problem
-from distributed_shampoo.utils.shampoo_fsdp_utils import (
+from ...shampoo_types import FSDPParameterMetadata
+
+from ...tests.shampoo_test_utils import construct_training_problem
+from ...utils.shampoo_fsdp_utils import (
     compile_fsdp_parameter_metadata,
     parse_fsdp_params,
     parse_fully_shard_params,

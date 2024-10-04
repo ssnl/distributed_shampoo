@@ -81,8 +81,8 @@ optimizer = SGD(
 we would instead use:
 ```
 import torch
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import SGDGraftingConfig
+from .distributed_shampoo import DistributedShampoo
+from .shampoo_types import SGDGraftingConfig
 
 model = instantiate_model()
 
@@ -120,8 +120,8 @@ optimizer = Adam(
 we would instead use:
 ```
 import torch
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import AdamGraftingConfig
+from .distributed_shampoo import DistributedShampoo
+from .shampoo_types import AdamGraftingConfig
 
 model = instantiate_model()
 
@@ -160,8 +160,8 @@ optimizer = Adagrad(
 we would instead use:
 ```
 import torch
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import AdaGradGraftingConfig
+from .distributed_shampoo import DistributedShampoo
+from .shampoo_types import AdaGradGraftingConfig
 
 model = instantiate_model()
 
@@ -200,8 +200,8 @@ optimizer = AdamW(
 we would instead use:
 ```
 import torch
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import AdamGraftingConfig
+from .distributed_shampoo import DistributedShampoo
+from .shampoo_types import AdamGraftingConfig
 
 model = instantiate_model()
 
@@ -241,8 +241,8 @@ import os
 import torch
 import torch.distributed as dist
 
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import AdamGraftingConfig, CommunicationDType, DDPShampooConfig
+from .distributed_shampoo import DistributedShampoo
+from .shampoo_types import AdamGraftingConfig, CommunicationDType, DDPShampooConfig
 from torch import nn
 
 LOCAL_RANK = int(os.environ["LOCAL_RANK"])
@@ -297,9 +297,9 @@ import torch
 import torch.distributed as dist
 from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
 
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import AdamGraftingConfig, FSDPShampooConfig
-from distributed_shampoo.utils.shampoo_fsdp_utils import compile_fsdp_parameter_metadata
+from .distributed_shampoo import DistributedShampoo
+from .shampoo_types import AdamGraftingConfig, FSDPShampooConfig
+from .utils.shampoo_fsdp_utils import compile_fsdp_parameter_metadata
 
 LOCAL_RANK = int(os.environ["LOCAL_RANK"])
 WORLD_RANK = int(os.environ["RANK"])

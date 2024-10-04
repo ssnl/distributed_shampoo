@@ -17,27 +17,27 @@ from operator import methodcaller
 from typing import Any, DefaultDict, Sequence, Tuple, Union
 
 import torch
-from distributed_shampoo.shampoo_types import PrecisionConfig, PreconditionerValueError
-from distributed_shampoo.utils.shampoo_block_info import BlockInfo
-from distributed_shampoo.utils.shampoo_quantization import (
+from ..shampoo_types import PrecisionConfig, PreconditionerValueError
+from ..utils.shampoo_block_info import BlockInfo
+from ..utils.shampoo_quantization import (
     QuantizedTensor,
     QuantizedTensorList,
 )
-from distributed_shampoo.utils.shampoo_utils import (
+from ..utils.shampoo_utils import (
     compress_list,
     get_dtype_size,
     ParameterizeEnterExitContext,
     _zip_equal,
 )
 
-from distributed_shampoo.matrix_functions import (
+from ..matrix_functions import (
     check_diagonal,
     compute_matrix_root_inverse_residuals,
     matrix_inverse_root,
 )
 
-from distributed_shampoo.matrix_functions_types import DefaultEigenConfig, RootInvConfig
-from distributed_shampoo.optimizer_modules import OptimizerModule
+from ..matrix_functions_types import DefaultEigenConfig, RootInvConfig
+from ..optimizer_modules import OptimizerModule
 from torch import Tensor
 from torch.autograd import profiler
 

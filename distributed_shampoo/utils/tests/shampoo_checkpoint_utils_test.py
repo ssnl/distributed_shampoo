@@ -14,13 +14,13 @@ import unittest
 from typing import List
 
 import torch
-from distributed_shampoo.utils.shampoo_checkpoint_utils import (
+from .utils.shampoo_checkpoint_utils import (
     extract_state_dict_content,
     flatten,
     unflatten,
     update_param_state_dict_object,
 )
-from distributed_shampoo.optimizer_modules import OptimizerModule
+from .optimizer_modules import OptimizerModule
 
 from torch import Tensor
 

@@ -11,7 +11,7 @@ import re
 import unittest
 from typing import Type, Union
 
-from distributed_shampoo.shampoo_types import (
+from ..shampoo_types import (
     AbstractDataclass,
     AdaGradGraftingConfig,
     AdamGraftingConfig,

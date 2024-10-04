@@ -13,7 +13,7 @@ from typing import Tuple
 
 import torch
 
-from distributed_shampoo.examples.trainer_utils import (
+from .examples.trainer_utils import (
     get_data_loader_and_sampler,
     get_model_and_loss_fn,
     instantiate_optimizer,
@@ -21,7 +21,7 @@ from distributed_shampoo.examples.trainer_utils import (
     Parser,
     set_seed,
 )
-from distributed_shampoo.shampoo_types import PrecisionConfig
+from .shampoo_types import PrecisionConfig
 from torch import nn
 
 logging.basicConfig(

@@ -29,8 +29,8 @@ pip install -e .
 After installation, basic usage looks like:
 ```
 import torch
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import AdamGraftingConfig
+from .distributed_shampoo import DistributedShampoo
+from .shampoo_types import AdamGraftingConfig
 
 model = ...  # Instantiate model
 

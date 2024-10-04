@@ -18,8 +18,8 @@ from unittest import mock
 
 import torch
 import distributed_shampoo.distributed_shampoo as distributed_shampoo
-from distributed_shampoo.distributed_shampoo import DistributedShampoo
-from distributed_shampoo.shampoo_types import (
+from .. import DistributedShampoo
+from ..shampoo_types import (
     AdaGradGraftingConfig,
     DDPShampooConfig,
     DistributedConfig,
@@ -32,11 +32,11 @@ from distributed_shampoo.shampoo_types import (
     SHAMPOO_PRECONDITIONER_LIST,
     ShampooPT2CompileConfig,
 )
-from distributed_shampoo.utils.shampoo_preconditioner_list import (
+from ..utils.shampoo_preconditioner_list import (
     ShampooPreconditionerList,
 )
-from distributed_shampoo.utils.shampoo_quantization import QuantizedTensorList
-from matrix_functions_types import DefaultEigenConfig
+from ..utils.shampoo_quantization import QuantizedTensorList
+from ..matrix_functions_types import DefaultEigenConfig
 from torch import nn
 
 
