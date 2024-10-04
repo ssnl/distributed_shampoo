@@ -18,6 +18,7 @@ from distributed_shampoo.utils.shampoo_block_info import BlockInfo
 from distributed_shampoo.utils.shampoo_utils import (
     compress_list,
     ParameterizeEnterExitContext,
+    _zip_equal,
 )
 
 from optimizer_modules import OptimizerModule
@@ -165,10 +166,10 @@ class QuantizedTensorList:
         # All min/max values should be None, or no min/max values are None
         assert all(
             a is None and b is None
-            for a, b in zip(self._min_values, self._max_values, strict=True)
+            for a, b in _zip_equal(self._min_values, self._max_values)
         ) or not any(
             None in (a, b)
-            for a, b in zip(self._min_values, self._max_values, strict=True)
+            for a, b in _zip_equal(self._min_values, self._max_values)
         )
 
     def __len__(self) -> int:
@@ -247,11 +248,10 @@ class QuantizedTensorList:
         masked_max_values = compress_list(self._max_values, selector)
         return QuantizedTensorList(
             tuple(
-                zip(
+                _zip_equal(
                     masked_quantized_value_list,
                     masked_min_values,
                     masked_max_values,
-                    strict=True,
                 )
             ),
             self.quantized_dtype,

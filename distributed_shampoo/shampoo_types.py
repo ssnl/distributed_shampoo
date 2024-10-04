@@ -8,9 +8,9 @@ LICENSE file in the root directory of this source tree.
 """
 
 import enum
-from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
+import attrs
 import torch
 from torch.distributed.device_mesh import DeviceMesh
 from torch.distributed.fsdp import ShardingStrategy
@@ -68,8 +68,8 @@ class PreconditionerValueError(ValueError):
     """ValueError for invalid values encountered during Preconditioner computation."""
 
 
-###### DATACLASSES ######
-@dataclass
+###### ATTRS CLASSES ######
+@attrs.define
 class FSDPParameterMetadata:
     """FSDP Metadata for a parameter.
 
@@ -91,7 +91,7 @@ class FSDPParameterMetadata:
     sharding_strategy: ShardingStrategy
 
 
-@dataclass
+@attrs.define
 class PrecisionConfig:
     """Configuration for precision of each optimizer state.
 
@@ -123,7 +123,7 @@ class PrecisionConfig:
     grafting_state_dtype: torch.dtype = torch.float32
 
 
-@dataclass
+@attrs.define
 class AbstractDataclass:
     def __new__(cls, *args: Any, **kwargs: Any) -> Optional["AbstractDataclass"]:
         if cls == AbstractDataclass or cls.__bases__[0] == AbstractDataclass:
@@ -131,14 +131,14 @@ class AbstractDataclass:
         return super().__new__(cls)
 
 
-@dataclass
+@attrs.define
 class DistributedConfig(AbstractDataclass):
     """Abstract dataclass for distributed configs in Shampoo."""
 
     ...
 
 
-@dataclass(kw_only=True)
+@attrs.define(kw_only=True)
 class DDPShampooConfig(DistributedConfig):
     """Configuration for DDP Shampoo.
 
@@ -158,7 +158,7 @@ class DDPShampooConfig(DistributedConfig):
     communicate_params: bool = False
 
 
-@dataclass(kw_only=True)
+@attrs.define(kw_only=True)
 class FSDPShampooConfig(DistributedConfig):
     """Configuration for FSDP Shampoo.
 
@@ -172,7 +172,7 @@ class FSDPShampooConfig(DistributedConfig):
     param_to_metadata: Dict[Parameter, FSDPParameterMetadata]
 
 
-@dataclass(kw_only=True)
+@attrs.define(kw_only=True)
 class FullyShardShampooConfig(DistributedConfig):
     """Configuration for FullyShard (per-parameter FSDP) Shampoo.
 
@@ -182,8 +182,8 @@ class FullyShardShampooConfig(DistributedConfig):
     pass
 
 
-@dataclass
-class HSDPShampooConfig(FSDPShampooConfig, DDPShampooConfig):
+@attrs.define(kw_only=True)
+class HSDPShampooConfig(DistributedConfig):
     """Configuration for HSDP Shampoo.
 
     Enables distributed computation and optimizer states (like ZeRO-1) via DTensor for Shampoo across ranks with shared
@@ -202,9 +202,13 @@ class HSDPShampooConfig(FSDPShampooConfig, DDPShampooConfig):
     """
 
     device_mesh: DeviceMesh
+    param_to_metadata: Dict[Parameter, FSDPParameterMetadata]
+    communication_dtype: CommunicationDType = CommunicationDType.DEFAULT
+    num_trainers_per_group: int = -1
+    communicate_params: bool = False
 
 
-@dataclass
+@attrs.define
 class ShampooPT2CompileConfig:
     """Configuration for Shampoo PT2 compilation.
 
@@ -229,21 +233,21 @@ class ShampooPT2CompileConfig:
     enable_shampoo_pt2_dynamic_shape: Optional[bool] = False
 
 
-@dataclass
+@attrs.define
 class GraftingConfig(AbstractDataclass):
     """Abstract dataclass for grafting configurations in Shampoo."""
 
     ...
 
 
-@dataclass
+@attrs.define
 class SGDGraftingConfig(GraftingConfig):
     """Configuration for grafting from SGD."""
 
     ...
 
 
-@dataclass(kw_only=True)
+@attrs.define(kw_only=True)
 class AdaGradGraftingConfig(GraftingConfig):
     """Configuration for grafting from AdaGrad.
 
@@ -255,14 +259,14 @@ class AdaGradGraftingConfig(GraftingConfig):
 
     epsilon: float = 1e-10
 
-    def __post_init__(self) -> None:
-        super().__init__()
+    def __attrs_post_init__(self) -> None:
+        super().__attrs_post_init__()
         if not self.epsilon > 0.0:
             raise ValueError(f"Invalid epsilon value: {self.epsilon}. Must be > 0.0.")
 
 
-@dataclass(kw_only=True)
-class RMSpropGraftingConfig(AdaGradGraftingConfig):
+@attrs.define(kw_only=True)
+class RMSpropGraftingConfig(GraftingConfig):
     """Configuration for grafting from RMSprop.
 
     Args:
@@ -274,15 +278,15 @@ class RMSpropGraftingConfig(AdaGradGraftingConfig):
 
     beta2: float = 0.99
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __attrs_post_init__(self) -> None:
+        super().__attrs_post_init__()
         if not 0.0 < self.beta2 <= 1.0:
             raise ValueError(
                 f"Invalid grafting beta2 parameter: {self.beta2}. Must be in (0.0, 1.0]."
             )
 
 
-@dataclass(kw_only=True)
+@attrs.define(kw_only=True)
 class AdamGraftingConfig(AdaGradGraftingConfig):
     """Configuration for grafting from Adam.
 
@@ -295,8 +299,8 @@ class AdamGraftingConfig(AdaGradGraftingConfig):
 
     beta2: float = 0.999
 
-    def __post_init__(self) -> None:
-        super().__post_init__()
+    def __attrs_post_init__(self) -> None:
+        super().__attrs_post_init__()
         if not 0.0 < self.beta2 <= 1.0:
             raise ValueError(
                 f"Invalid grafting beta2 parameter: {self.beta2}. Must be in (0.0, 1.0]."

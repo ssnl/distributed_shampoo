@@ -11,7 +11,7 @@ import enum
 import logging
 import math
 import time
-from dataclasses import asdict
+from attrs import asdict
 from fractions import Fraction
 from math import isfinite
 from typing import Tuple, Union
@@ -177,7 +177,7 @@ def _compute_eigenvalue_decomposition(
         A (Tensor): The input symmetric matrix.
         retry_double_precision (bool, optional): Whether to retry the computation in double precision if it fails in the current precision. Defaults to True.
 
-    Returns:
+    Returns:≥
         Tuple[Tensor, Tensor]: A tuple containing the eigenvalues and eigenvectors of the input matrix.
     """
     try:

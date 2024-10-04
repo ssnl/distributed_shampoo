@@ -12,6 +12,7 @@ from typing import Dict, Tuple
 
 import torch
 from distributed_shampoo.shampoo_types import FSDPParameterMetadata
+from distributed_shampoo.utils.shampoo_utils import _zip_equal
 
 from torch.distributed.fsdp import FullyShardedDataParallel as FSDP, ShardingStrategy
 from torch.distributed.tensor import DTensor
@@ -61,13 +62,12 @@ def compile_fsdp_parameter_metadata(
                 ),
                 sharding_strategy=sharding_strategy,
             )
-            for param, fqn, shape, numel, shard_param_info in zip(
+            for param, fqn, shape, numel, shard_param_info in _zip_equal(
                 params,
                 fqns,
                 shapes,
                 numels,
                 shard_param_infos,
-                strict=True,
             )
         }
 

@@ -14,6 +14,7 @@ from math import prod
 from typing import Any, Dict, List, Tuple
 
 import torch
+import torch.distributed
 from distributed_shampoo.shampoo_types import (
     CommunicationDType,
     FSDPParameterMetadata,
@@ -31,6 +32,7 @@ from distributed_shampoo.utils.shampoo_utils import (
     get_dtype_size,
     merge_small_dims,
     multi_dim_split,
+    _zip_equal,
 )
 from torch import distributed as dist, Tensor
 from torch.distributed import tensor as dtensor
@@ -202,7 +204,7 @@ class HSDPDistributor(DistributorInterface):
 
         # Initialize selectors and local blocked (masked) parameters.
         self._distributor_selector: Tuple[bool, ...] = tuple(
-            block_info.group_source_rank == self._comms_group_rank
+            block_info.group_source_rank == self._comms_group_rank  # type: ignore
             for block_info in self._global_block_info_list
         )
         self._local_blocked_params: Tuple[Tensor, ...] = compress_list(
@@ -373,16 +375,14 @@ class HSDPDistributor(DistributorInterface):
                 (param_index, param),
                 num_blocks_within_param,
                 (buffer_size_ranks_start, buffer_size_ranks_end),
-            ) in zip(
+            ) in _zip_equal(
                 enumerate(self._param_group[PARAMS]),
                 self._global_num_blocks_per_param,
                 generate_pairwise_indices(self._global_num_blocks_per_param),
-                strict=True,
             )
-            for block_index, (_, group_source_rank) in zip(
+            for block_index, (_, group_source_rank) in _zip_equal(
                 range(num_blocks_within_param),
                 buffer_size_ranks[buffer_size_ranks_start:buffer_size_ranks_end],
-                strict=True,
             )
         )
 
@@ -565,8 +565,8 @@ class HSDPDistributor(DistributorInterface):
             )[0]
             .view(self._communication_dtype)
             .view(blocked_param.shape)
-            for buffer, blocked_param in zip(
-                splitted_local_dist_buffers, self._global_blocked_params, strict=True
+            for buffer, blocked_param in _zip_equal(
+                splitted_local_dist_buffers, self._global_blocked_params,
             )
         )
         self._local_dist_blocked_buffers = compress_list(
@@ -592,12 +592,11 @@ class HSDPDistributor(DistributorInterface):
             num_blocks,
             (block_index, next_block_index),
             (split_index, next_split_index),
-        ) in zip(
+        ) in _zip_equal(
             self._param_group[PARAMS],
             self._global_num_blocks_per_param,
             generate_pairwise_indices(self._global_num_blocks_per_param),
             generate_pairwise_indices(self._global_num_splits_per_param),
-            strict=True,
         ):
             flattened_grad = flattened_param.grad
             param_distributor_selector = self._distributor_selector[
@@ -631,11 +630,10 @@ class HSDPDistributor(DistributorInterface):
                 grad,
                 merged_dims,
                 (blocks_within_split_index, next_blocks_within_split_index),
-            ) in zip(
+            ) in _zip_equal(
                 split_grads,
                 merged_dims_within_flattened_param,
                 generate_pairwise_indices(num_blocks_within_split_grads),
-                strict=True,
             ):
                 # Obtain blocks for each split gradient after merging.
                 blocks_within_grad = multi_dim_split(

@@ -7,26 +7,26 @@ LICENSE file in the root directory of this source tree.
 
 """
 
-from dataclasses import dataclass
+import attrs
 
 from distributed_shampoo.shampoo_types import AbstractDataclass
 
 
-@dataclass
+@attrs.define(kw_only=True)
 class PreconditionerComputationConfig(AbstractDataclass):
     """Configuration for preconditioner computation in Shampoo."""
 
     ...
 
 
-@dataclass
+@attrs.define(kw_only=True)
 class RootInvConfig(PreconditionerComputationConfig):
     """Base dataclass for matrix root inverse method configurations in Shampoo."""
 
     ...
 
 
-@dataclass(kw_only=True)
+@attrs.define(kw_only=True)
 class EigenConfig(RootInvConfig):
     """Configuration for eigendecomposition method in Shampoo.
 
@@ -47,7 +47,7 @@ class EigenConfig(RootInvConfig):
 DefaultEigenConfig = EigenConfig()
 
 
-@dataclass(kw_only=True)
+@attrs.define(kw_only=True)
 class CoupledNewtonConfig(RootInvConfig):
     """Configuration for coupled Newton method in Shampoo.
 
@@ -61,7 +61,7 @@ class CoupledNewtonConfig(RootInvConfig):
     tolerance: float = 1e-6
 
 
-@dataclass(kw_only=True)
+@attrs.define(kw_only=True)
 class CoupledHigherOrderConfig(RootInvConfig):
     """Configuration for coupled higher-order method in Shampoo.
 

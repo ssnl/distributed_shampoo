@@ -12,6 +12,7 @@ from typing import Iterable
 from distributed_shampoo.shampoo_types import PARAMS
 from distributed_shampoo.utils.shampoo_block_info import BlockInfo
 from distributed_shampoo.utils.shampoo_distributor import Distributor
+from distributed_shampoo.utils.shampoo_utils import _zip_equal
 from torch import distributed as dist, Tensor
 
 
@@ -25,7 +26,7 @@ class FullyShardDistributor(Distributor):
 
     """
 
-    def _get_params_or_grads(self, get_grad: bool = False) -> Iterable[Tensor | None]:
+    def _get_params_or_grads(self, get_grad: bool = False) -> 'Iterable[Tensor | None]':
         """Helper function to get the local params (or grad) from the param_group, where params are represented as DTensors.
 
         Args:
@@ -56,10 +57,9 @@ class FullyShardDistributor(Distributor):
                 composable_block_ids=(param_index, f"rank_{rank}-block_{block_index}"),
             )
             # Block index that is accumulated across all parameters within a parameter group.
-            for ((param_index, param), num_blocks_within_param) in zip(
+            for ((param_index, param), num_blocks_within_param) in _zip_equal(
                 enumerate(non_empty_params),
                 self._global_num_blocks_per_param,
-                strict=True,
             )
             for block_index in range(num_blocks_within_param)
         )

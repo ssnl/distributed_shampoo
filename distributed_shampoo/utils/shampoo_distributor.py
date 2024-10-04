@@ -23,6 +23,7 @@ from distributed_shampoo.utils.shampoo_utils import (
     generate_pairwise_indices,
     merge_small_dims,
     multi_dim_split,
+    _zip_equal,
 )
 from torch import Tensor
 
@@ -96,7 +97,7 @@ class DistributorInterface(ABC):
     def global_block_info_list(self) -> Tuple[BlockInfo, ...]:
         return self._global_block_info_list
 
-    def _get_params_or_grads(self, get_grad: bool = False) -> Iterable[Tensor | None]:
+    def _get_params_or_grads(self, get_grad: bool = False) -> 'Iterable[Tensor | None]':
         """Helper function that gets params or grads from the parameter group.
 
         NOTE: The purpose of this function is for FullyShardShampooDistributor (supporting
@@ -144,8 +145,8 @@ class DistributorInterface(ABC):
         global_blocked_params = []
         global_num_blocks_per_param = []
 
-        for param, merged_dims in zip(
-            self._get_params_or_grads(), self._global_merged_dims_list, strict=True
+        for param, merged_dims in _zip_equal(
+            self._get_params_or_grads(), self._global_merged_dims_list,
         ):
             assert param is not None
             # Obtain blocks for each parameter after merging.
@@ -188,12 +189,11 @@ class DistributorInterface(ABC):
         local_masked_blocked_grads = []
         global_grad_selector = []
 
-        for grad, merged_dims, num_blocks, (block_index, next_block_index) in zip(
+        for grad, merged_dims, num_blocks, (block_index, next_block_index) in _zip_equal(
             self._get_params_or_grads(get_grad=True),
             self._global_merged_dims_list,
             self._global_num_blocks_per_param,
             generate_pairwise_indices(self._global_num_blocks_per_param),
-            strict=True,
         ):
             param_distributor_selector = self._distributor_selector[
                 block_index:next_block_index
@@ -277,10 +277,9 @@ class Distributor(DistributorInterface):
                 composable_block_ids=(param_index, f"block_{block_index}"),
             )
             # Block index that is accumulated across all parameters within a parameter group.
-            for ((param_index, param), num_blocks_within_param) in zip(
+            for ((param_index, param), num_blocks_within_param) in _zip_equal(
                 enumerate(self._param_group[PARAMS]),
                 self._global_num_blocks_per_param,
-                strict=True,
             )
             for block_index in range(num_blocks_within_param)
         )
