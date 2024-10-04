@@ -14,14 +14,14 @@ from unittest import mock
 
 import torch
 
-from .utils import shampoo_quantization
-from .utils.shampoo_block_info import BlockInfo
-from .utils.shampoo_quantization import (
+from .. import shampoo_quantization
+from ..shampoo_block_info import BlockInfo
+from ..shampoo_quantization import (
     _FLOAT_DTYPES,
     QuantizedTensor,
     QuantizedTensorList,
 )
-from .utils.shampoo_utils import _zip_equal
+from ..shampoo_utils import _zip_equal
 from torch.testing._comparison import default_tolerances
 
 
