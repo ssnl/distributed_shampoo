@@ -18,7 +18,7 @@ from typing import Any, Dict, List, Tuple
 from unittest import mock
 
 import torch
-from distributed_shampoo import distributed_shampoo
+import distributed_shampoo.distributed_shampoo as distributed_shampoo
 from distributed_shampoo.distributed_shampoo import DistributedShampoo
 from distributed_shampoo.shampoo_types import (
     AdaGradGraftingConfig,

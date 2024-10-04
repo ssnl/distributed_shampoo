@@ -21,7 +21,7 @@ from distributed_shampoo.utils.shampoo_checkpoint_utils import (
     unflatten,
     update_param_state_dict_object,
 )
-from optimizer_modules import OptimizerModule
+from distributed_shampoo.optimizer_modules import OptimizerModule
 
 from torch import Tensor
 

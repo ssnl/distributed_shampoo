@@ -21,7 +21,7 @@ from distributed_shampoo.utils.shampoo_utils import (
     _zip_equal,
 )
 
-from optimizer_modules import OptimizerModule
+from distributed_shampoo.optimizer_modules import OptimizerModule
 from torch import Tensor
 
 logger: logging.Logger = logging.getLogger(__name__)

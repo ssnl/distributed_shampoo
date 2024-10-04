@@ -101,7 +101,7 @@ from distributed_shampoo.utils.shampoo_quantization import (
 )
 from distributed_shampoo.utils.shampoo_utils import compress_list, _zip_equal
 
-from matrix_functions_types import DefaultEigenConfig, RootInvConfig
+from distributed_shampoo.matrix_functions_types import DefaultEigenConfig, RootInvConfig
 from torch.optim.optimizer import ParamsT
 
 logger: logging.Logger = logging.getLogger(__name__)
