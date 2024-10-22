@@ -1,7 +1,11 @@
 # Optimizers
 
 *Copyright (c) Meta Platforms, Inc. and affiliates.
+Copyright (c) Tongzhou Wang 2024
 All rights reserved.*
+
+## @ssnl 's changes
+This version can be used as a proper python submodule. All files use relative imports and fit under **one** folder. You do not need to use the pip install, which means that you are free to tinker with these files with ease. Also now works with python 3.8.
 
 ## Description
 Optimizers is a Github repository of PyTorch optimization algorithms. It is designed for external collaboration and development.
