@@ -260,7 +260,12 @@ class AdaGradGraftingConfig(GraftingConfig):
     epsilon: float = 1e-10
 
     def __attrs_post_init__(self) -> None:
-        super().__attrs_post_init__()
+        try:
+            super().__attrs_post_init__
+        except AttributeError:
+            pass
+        else:
+            super().__attrs_post_init__()
         if not self.epsilon > 0.0:
             raise ValueError(f"Invalid epsilon value: {self.epsilon}. Must be > 0.0.")
 
@@ -279,7 +284,12 @@ class RMSpropGraftingConfig(GraftingConfig):
     beta2: float = 0.99
 
     def __attrs_post_init__(self) -> None:
-        super().__attrs_post_init__()
+        try:
+            super().__attrs_post_init__
+        except AttributeError:
+            pass
+        else:
+            super().__attrs_post_init__()
         if not 0.0 < self.beta2 <= 1.0:
             raise ValueError(
                 f"Invalid grafting beta2 parameter: {self.beta2}. Must be in (0.0, 1.0]."
@@ -300,7 +310,12 @@ class AdamGraftingConfig(AdaGradGraftingConfig):
     beta2: float = 0.999
 
     def __attrs_post_init__(self) -> None:
-        super().__attrs_post_init__()
+        try:
+            super().__attrs_post_init__
+        except AttributeError:
+            pass
+        else:
+            super().__attrs_post_init__()
         if not 0.0 < self.beta2 <= 1.0:
             raise ValueError(
                 f"Invalid grafting beta2 parameter: {self.beta2}. Must be in (0.0, 1.0]."
