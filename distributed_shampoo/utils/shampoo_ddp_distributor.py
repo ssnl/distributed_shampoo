@@ -31,8 +31,6 @@ from ..utils.shampoo_utils import (
 from torch import Tensor
 from torch.distributed import tensor as dtensor
 
-from torch.distributed.tensor import zeros as dtensor_zeros
-
 logger: logging.Logger = logging.getLogger(__name__)
 
 
@@ -478,6 +476,7 @@ class DDPDistributor(DistributorInterface):
             )
         )
 
+        from torch.distributed.tensor import zeros as dtensor_zeros  # this only appears in pytorch 2.5 so import only when needed
         return dtensor_zeros(
             shape,
             dtype=dtype,

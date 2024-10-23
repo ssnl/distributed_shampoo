@@ -14,16 +14,15 @@ from functools import partial
 from typing import Callable, List, Optional, Tuple
 
 import torch
-from .distributed_shampoo import DistributedShampoo
-from .shampoo_types import (
+from ...distributed_shampoo import DistributedShampoo
+from ...shampoo_types import (
     AdaGradGraftingConfig,
     FullyShardShampooConfig,
 )
-from .tests.shampoo_test_utils import construct_training_problem
+from ...tests.shampoo_test_utils import construct_training_problem
 
 from torch import nn
 from torch.distributed._composable.fsdp import fully_shard
-from torch.distributed.tensor import DTensor
 from torch.optim.optimizer import ParamsT
 from torch.testing._internal.common_distributed import skip_if_lt_x_gpu
 from torch.testing._internal.common_fsdp import FSDPTest
@@ -108,6 +107,7 @@ class ShampooFullyShardDistributorTest(FSDPTest):
         if uses_fully_shard:
             # When FullyShard is used, model parameters are DTensors. We obtain the full value of
             # parameters from DTensors.
+            from torch.distributed.tensor import DTensor  # this only appears in pytorch 2.5 so import only when needed
             params = []
             for param in model.parameters():
                 # Need this assertion to get pass type-checking test.

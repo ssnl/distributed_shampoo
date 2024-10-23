@@ -15,7 +15,6 @@ from ..shampoo_types import FSDPParameterMetadata
 from ..utils.shampoo_utils import _zip_equal
 
 from torch.distributed.fsdp import FullyShardedDataParallel as FSDP, ShardingStrategy
-from torch.distributed.tensor import DTensor
 from torch.nn import Parameter
 
 
@@ -173,6 +172,7 @@ def parse_fully_shard_params(
         hybrid_shard_params (Dict[str, Parameter]): Dictionary mapping each parameter name to its corresponding hybrid shard parameter.
         other_params (Dict[str, Parameter]): Dictionary mapping each parameter name to its corresponding non fully shard parameter.
     """
+    from torch.distributed.tensor import DTensor  # this only appears in pytorch 2.5 so import only when needed
     return _partition_params(
         named_params=named_params,
         fsdp_criteria=lambda param: isinstance(param, DTensor)

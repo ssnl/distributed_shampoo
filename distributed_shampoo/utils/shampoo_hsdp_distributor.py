@@ -37,7 +37,6 @@ from ..utils.shampoo_utils import (
 from torch import distributed as dist, Tensor
 from torch.distributed import tensor as dtensor
 from torch.distributed.device_mesh import _mesh_resources
-from torch.distributed.tensor import zeros as dtensor_zeros
 from torch.nn import Parameter
 
 logger: logging.Logger = logging.getLogger(__name__)
@@ -928,6 +927,7 @@ class HSDPDistributor(DistributorInterface):
             device_mesh_2d, "replicate"
         )[group_source_rank]
 
+        from torch.distributed.tensor import zeros as dtensor_zeros  # this only appears in pytorch 2.5 so import only when needed
         return dtensor_zeros(
             shape,
             dtype=dtype,
