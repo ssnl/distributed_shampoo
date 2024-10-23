@@ -84,14 +84,14 @@ class CoupledHigherOrderConfig(RootInvConfig):
     disable_tf32: bool = True
 
 
-@dataclass
+@attrs.define
 class EigenvalueCorrectionConfig(PreconditionerComputationConfig):
     """Base dataclass for matrix eigenvector method configurations in Shampoo."""
 
     ...
 
 
-@dataclass(kw_only=True)
+@attrs.define(kw_only=True)
 class EighEigenvalueCorrectionConfig(EigenvalueCorrectionConfig):
     """Configuration for eigendecomposition method used in eigenvalue corrected Shampoo.
 
